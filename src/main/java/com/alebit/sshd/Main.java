@@ -22,7 +22,7 @@ public class Main {
         SshServer sshd = SshServer.setUpDefaultServer();
         sshd.setPort(port);
         sshd.setKeyPairProvider(new SimpleGeneratorHostKeyProvider(Paths.get("hostkey.ser")));
-        sshd.setShellFactory(new ProcessShellFactory(new String[] { "/bin/bash" }));
+        sshd.setShellFactory(new ProcessShellFactory(new String[] { "/bin/bash", "-i", "-l" }));
         sshd.setCommandFactory(new ScpCommandFactory());
         sshd.setTcpipForwardingFilter(new ForwardingFilter() {
             @Override
