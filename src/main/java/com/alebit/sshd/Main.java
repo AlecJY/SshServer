@@ -16,11 +16,13 @@ import java.nio.file.Paths;
 import java.security.PublicKey;
 
 public class Main {
+    public static int port = 8080;
+
     public Main() {
         SshServer sshd = SshServer.setUpDefaultServer();
-        sshd.setPort(8080);
+        sshd.setPort(port);
         sshd.setKeyPairProvider(new SimpleGeneratorHostKeyProvider(Paths.get("hostkey.ser")));
-        sshd.setShellFactory(new ProcessShellFactory(new String[] { "/bin/sh", "-i", "-l" }));
+        sshd.setShellFactory(new ProcessShellFactory(new String[] { "/bin/bash" }));
         sshd.setCommandFactory(new ScpCommandFactory());
         sshd.setTcpipForwardingFilter(new ForwardingFilter() {
             @Override
@@ -51,7 +53,9 @@ public class Main {
             }
         });
         try {
+            System.out.println("Starting SSH Server at port " + port);
             sshd.start();
+            System.out.println("Started SSH Server successfully!");
             while (true) {
                 Thread.sleep(Integer.MAX_VALUE);
             }
